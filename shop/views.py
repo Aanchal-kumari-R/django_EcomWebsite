@@ -61,7 +61,8 @@ def searchMatch(query,item):
     if query in item.desc.lower() or query in item.product_name.lower() or query in item.category.lower(): 
       return True 
     else: 
-        return False 
+        return False  
+    # ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
 
 def search(request):   
     query = request.GET.get('search')
