@@ -19,7 +19,8 @@
        
     <h2 class="mt-4">Place Order Details</h2>
     <form class="row g-3" method ="POST" action="/shop/checkout/"> {% csrf_token %} 
-      <input type="hidden" id="itemJson" name="itemJson">  
+      <input type="hidden" id="itemJson" name="itemJson"> 
+      <input type="hidden" id="amount" name="amount"> 
         <div class="col-md-6">
             <label for="inputName" class="form-label">Name:</label>
             <input type="text" class="form-control" id="inputName" name='name' id = "name" placeholder="Name">
@@ -100,9 +101,8 @@ $('#itemJson').val(JSON.stringify(cart))
 alert('Thanks for ordering with us. Your order id is {{id}}. Use it to track your order using our order tracker' )
 localStorage.clear(); 
 document.location ="/shop"; 
-{% endif %} 
-
-
+{% endif %}  
+$('#amount').val($('#totalPrice').html())
 </script> 
 
 {% endblock  %}
