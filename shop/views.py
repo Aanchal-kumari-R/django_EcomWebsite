@@ -47,12 +47,12 @@ def tracker(request):
                 updates = [] 
                 for item in update: 
                     updates.append({'text':item.update_desc,'time':item.timestamp}) 
-                    response = json.dumps([updates,order[0].items_json],default=str) 
+                    response = json.dumps({"status":"success","updates":updates,"itemJson":order[0].items_json},default=str) 
                 return HttpResponse(response)
             else: 
-                 return HttpResponse('{}') 
+                 return HttpResponse('{"status":"noitem"}') 
         except Exception as e: 
-                 return HttpResponse('{}')
+                 return HttpResponse('{"status":"error"}')
 
     return render(request,'shop/tracker.html') 
 
@@ -62,7 +62,7 @@ def searchMatch(query,item):
       return True 
     else: 
         return False  
-    # ghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+    
 
 def search(request):   
     query = request.GET.get('search')
@@ -93,14 +93,13 @@ def checkout(request):
     if request.method == "POST": 
         items_Json = request.POST.get('itemJson','') 
         name = request.POST.get('name', '') 
-        amount = request.POST.get('amount', '') 
         email = request.POST.get('email', '')  
         address=request.POST.get('address','') + " "+ request.POST.get('address2','')
         city = request.POST.get('city','')
         state = request.POST.get('state','') 
         zip_code = request.POST.get('zip_code','')
         phone = request.POST.get('phone', '') 
-        order = Order(items_json=items_Json ,name=name,amount=amount, email=email,address=address, city=city, state=state,zip_code=zip_code,phone=phone) 
+        order = Order(items_json=items_Json ,name=name, email=email,address=address, city=city, state=state,zip_code=zip_code,phone=phone) 
         order.save()  
         update = OrderUpdate(order_id = order.order_id, update_desc="The order has been placed.") 
         update.save()

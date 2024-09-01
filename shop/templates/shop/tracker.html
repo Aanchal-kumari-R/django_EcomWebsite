@@ -54,34 +54,25 @@ $('#trackerForm').submit(function(event){
     data : formData , 
     encode : true
   })  
-  .done(function(data){ 
-    console.log(data);  
-    data = JSON.parse(data);
-    updates = data[0];  
-    if(updates.length>0 & updates!={}){ 
-    for(i=0; i<updates.length;i++){ 
-        let text = updates[i]['text']; 
-        let time = updates[i]['time']; 
-        mystr = `<li class="list-group-item d-flex justify-content-between align-items-center"> 
+  .done(function(data){  
+    $('#citems').empty();
+    console.log(data);   
+    data = JSON.parse(data);  
+
+        if(data['status'] == 'success'){  
+          let updates = data['updates'];  
+           for(i=0; i<updates.length;i++){ 
+            let text = updates[i]['text']; 
+            let time = updates[i]['time']; 
+             mystr = `<li class="list-group-item d-flex justify-content-between align-items-center"> 
             ${text} 
             <span class="badge badge-primary badge-pill">${time}</span>
-        </li> ` 
+            </li> ` 
         $('#items').append(mystr);
-    } 
-}  
-else{  
-    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center"> 
-        Sorry, We are not able to fetch this order id and email. Make sure to type correct order id and email. 
-    </li> ` 
-    $('#items').append(mystr);
-
- 
-}       
-
-// fill in the order details  
-cart = JSON.parse(data[1]);  
-console.log(cart);  
-for(item in cart){ 
+    }   
+     let cart = JSON.parse(data['itemJson']);  
+     console.log(cart);  
+for(let item in cart){ 
     let name = cart[item][1]; 
     let qty = cart[item][0]; 
     mystr = `<li class="list-group-item d-flex justify-content-between align-items-center"> 
@@ -92,10 +83,16 @@ for(item in cart){
 $('#citems').append(mystr);
 }   
 
+}   
+else{  
+    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center"> 
+        Sorry, We are not able to fetch this order id and email. Make sure to type correct order id and email. 
+    </li> ` 
+    $('#items').append(mystr); 
+    $('#citems').append(mystr); 
+}   
   }); 
   event.preventDefault(); 
-
-
 })
 </script>
 {% endblock  %}
